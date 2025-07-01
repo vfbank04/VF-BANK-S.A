@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VF Bank - Simulação de Empréstimos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Montserrat', sans-serif; background: #f0f2f5; color: #333; }
+    header { background: linear-gradient(to right, #001f3f, #003366); color: white; padding: 2rem; text-align: center; }
+    nav { background: #001f3f; padding: 1rem; text-align: center; }
+    nav a { color: white; margin: 0 1rem; text-decoration: none; font-weight: 600; }
+    .container { max-width: 1000px; margin: auto; padding: 2rem; background: white; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+    h2 { margin-bottom: 1rem; color: #001f3f; }
+    .simulador input, .simulador select { padding: 0.5rem; margin: 0.5rem 0; width: 100%; }
+    .simulador button { padding: 0.7rem; background: #001f3f; color: white; border: none; width: 100%; cursor: pointer; margin-top: 1rem; }
+    .resultado { margin-top: 1rem; font-weight: bold; }
+    .whatsapp-fixo {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #25D366;
+      color: white;
+      font-size: 28px;
+      padding: 14px 16px;
+      border-radius: 50%;
+      text-decoration: none;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+    }
+    footer { text-align: center; padding: 2rem; background: #001f3f; color: white; margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>VF Bank</h1>
+    <p>Seu parceiro em soluções financeiras com praticidade, segurança e confiança no mercado.</p>
+  </header>
+  <nav>
+    <a href="#sobre">Sobre</a>
+    <a href="#servicos">Serviços</a>
+    <a href="#simulador">Simulador</a>
+  </nav>
+
+  <div class="container" id="sobre">
+    <h2>Sobre a VF Bank</h2>
+    <p>A VF Bank é uma empresa focada em oferecer soluções financeiras ágeis, seguras e personalizadas. Atendemos clientes em todo o Brasil com o objetivo de facilitar o acesso ao crédito e ajudar na organização da vida financeira. Nossa equipe está comprometida em encontrar a melhor solução para cada cliente, seja com empréstimos rápidos, renegociação de dívidas ou consultorias financeiras.</p>
+    <p>Valorizamos a transparência, por isso todas as nossas taxas e condições são informadas de forma clara antes da contratação. Aqui, você encontra atendimento humanizado, digital e sem burocracia.</p>
+  </div>
+
+  <div class="container" id="servicos">
+    <h2>Serviços</h2>
+    <ul>
+      <li>Empréstimos pessoais com aprovação rápida e sem burocracia</li>
+      <li>Negociação de dívidas com condições acessíveis</li>
+      <li>Parcelamento flexível de 1 a 7 vezes</li>
+      <li>Consultoria personalizada para organização financeira</li>
+      <li>Atendimento 100% online via WhatsApp</li>
+    </ul>
+  </div>
+
+  <div class="container" id="simulador">
+    <h2>Simule seu Empréstimo</h2>
+    <p>Faça a simulação do seu empréstimo com juros de <strong>20% ao mês</strong> ou <strong>10% ao dia</strong>. É possível parcelar em até 7 vezes. A partir da 4ª parcela, há um acréscimo de R$ 5,00 por parcela.</p>
+    <div class="simulador">
+      <input type="number" id="valor" placeholder="Valor do empréstimo">
+      <input type="number" id="prazo" placeholder="Prazo (em dias ou meses)">
+      <select id="tipoPrazo">
+        <option value="mes">Mensal (20% ao mês)</option>
+        <option value="dia">Diário (10% ao dia)</option>
+      </select>
+      <input type="number" id="parcelas" placeholder="Nº de parcelas (1 a 7)">
+      <input type="tel" id="telefone" placeholder="Digite seu número com DDD (ex: 33999702202)">
+      <button onclick="simular()">Simular e Enviar para WhatsApp</button>
+      <div class="resultado" id="resultado"></div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 VF Bank - Todos os direitos reservados</p>
+  </footer>
+
+  <a href="#" class="whatsapp-fixo" id="botaoWhats" target="_blank" aria-label="Abrir conversa no WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <script>
+    function simular() {
+      const valor = parseFloat(document.getElementById('valor').value);
+      const prazo = parseInt(document.getElementById('prazo').value);
+      const tipoPrazo = document.getElementById('tipoPrazo').value;
+      const parcelas = parseInt(document.getElementById('parcelas').value);
+      const telefone = document.getElementById('telefone').value;
+      const resultado = document.getElementById('resultado');
+
+      if (isNaN(valor) || isNaN(prazo) || isNaN(parcelas) || parcelas < 1 || parcelas > 7 || valor <= 0 || prazo <= 0 || !telefone) {
+        resultado.textContent = 'Preencha todos os campos corretamente.';
+        return;
+      }
+
+      let montante;
+      if (tipoPrazo === 'mes') {
+        montante = valor * Math.pow(1 + 0.20, prazo);
+      } else {
+        montante = valor * Math.pow(1 + 0.10, prazo);
+      }
+
+      const adicional = parcelas >= 4 ? parcelas * 5 : 0;
+      const totalComParcelamento = montante + adicional;
+      const valorParcela = (totalComParcelamento / parcelas).toFixed(2);
+
+      const msg = `Olá! Fiz uma simulação no site da VF Bank.%0AValor solicitado: R$ ${valor.toFixed(2).replace('.', ',')}%0APrazo: ${prazo} ${tipoPrazo === 'mes' ? 'meses' : 'dias'}%0AParcelado em ${parcelas}x de R$ ${valorParcela.replace('.', ',')}%0ATotal com juros e taxas: R$ ${totalComParcelamento.toFixed(2).replace('.', ',')}`;
+
+      resultado.textContent = msg.replace(/%0A/g, '\n');
+      document.getElementById('botaoWhats').href = `https://wa.me/55${telefone}?text=${msg}`;
+    }
+  </script>
+</body>
+</html>
