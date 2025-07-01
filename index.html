@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -116,7 +117,11 @@
       const totalComParcelamento = montante + adicional;
       const valorParcela = (totalComParcelamento / parcelas).toFixed(2);
 
-      const msg = `Olá! Fiz uma simulação no site da VF Bank.\nValor solicitado: R$ ${valor.toFixed(2).replace('.', ',')}\nPrazo: ${prazo} ${tipoPrazo === 'mes' ? 'meses' : 'dias'}\nParcelado em ${parcelas}x de R$ ${valorParcela.replace('.', ',')}\nTotal com juros e taxas: R$ ${totalComParcelamento.toFixed(2).replace('.', ',')}`;
+      const msg = `Olá! Fiz uma simulação no site da VF Bank.
+Valor solicitado: R$ ${valor.toFixed(2).replace('.', ',')}
+Prazo: ${prazo} ${tipoPrazo === 'mes' ? 'meses' : 'dias'}
+Parcelado em ${parcelas}x de R$ ${valorParcela.replace('.', ',')}
+Total com juros e taxas: R$ ${totalComParcelamento.toFixed(2).replace('.', ',')}`;
 
       resultado.textContent = msg;
       document.getElementById('botaoWhats').href = `https://wa.me/55${telefone}?text=${encodeURIComponent(msg)}`;
